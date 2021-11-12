@@ -1,8 +1,11 @@
 <?php
-include('../componentes/header.php');
+    include('../componentes/header.php');
+    if (!isset($_SESSION["usuarioId"])) 
+    {
+        header("location: ../login/index.php");
+    }
 ?>
-
-
+ 
 <div class="container">
     <hr>
     <div class="card">
@@ -10,9 +13,9 @@ include('../componentes/header.php');
             <h2>Cadastro</h2>
         </div>
         <div class="card-body">
-            <form method="post" action="../funcoes.php">
-                <input class="form-control" type="hidden" name="acao" value="cadastrar" required>
-                <br />
+            <form method="post" action="../acoes.php">
+
+                <input class="form-control" type="hidden" name="acao" value="cadastrar">
                 <input class="form-control" type="text" placeholder="Digite o nome" name="nome" id="nome" required>
                 <br />
                 <input class="form-control" type="text" placeholder="Digite o sobrenome" name="sobrenome" id="sobrenome" required>
@@ -29,5 +32,5 @@ include('../componentes/header.php');
 
 
 <?php
-include('../componentes/footer.php');
+    include('../componentes/footer.php');
 ?>

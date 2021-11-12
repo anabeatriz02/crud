@@ -1,10 +1,16 @@
 <?php
 
 include('../componentes/header.php');
-include('../dados/funcoes.php');
-require("../database/conexao.php");
+// require("../database/conexao.php");
+require('../funcoes.php');
+
+if (!isset($_SESSION["usuarioId"])) {
+    header("location: ../login/index.php");
+}
 
 $resultado = listar($conexao);
+
+
 
 ?>
 
@@ -45,46 +51,18 @@ $resultado = listar($conexao);
 
                     </th>
 
+
+
                 </tr>
-            <?php } ?>
+            <?php }?>
 
         </tbody>
-
-    </table>
+     </table>
 
 </div>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <main>
-
-        <form id="formDeletar" method="POST" action="./acoes.php">
-            <input type="hidden" name="acao" value="deletar" />
-            <input type="hidden" name="dados" id="dados" />
-        </form>
-    </main>
-</body>
-
-</html>
-
-<script lang="javascript">
-    function deletar(dados) {
-        if (confirm("Tem certeza que deseja deletar estes dados?")) {
-            document.querySelector("#dados").value = dados;
-            document.querySelector("#formDeletar").submit();
-        }
-    }
-</script>
-
 <?php
+
 include('../componentes/footer.php');
+
 ?>
