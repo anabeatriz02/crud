@@ -1,15 +1,17 @@
 <?php
 
-session_start();
+// session_start();
 
-if (isset($_SESSION["usuarioId"])) 
-{
-    header('location: listagem/index.php');
-}
+// if (isset($_SESSION["usuarioId"])) 
+// {
+//     header('location: listagem/index.php');
+// }
 
-else
-{
-    header("location: ./login/index.php");
-}
+// else
+// {
+//     header("location: ./login/index.php");
+// }
+
+header("location: login/index.php");
 
 ?>

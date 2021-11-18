@@ -1,16 +1,18 @@
 <?php
 
-include('../componentes/header.php');
-// require("../database/conexao.php");
-require('../funcoes.php');
+session_start();
 
 if (!isset($_SESSION["usuarioId"])) {
     header("location: ../login/index.php");
 }
 
-$resultado = listar($conexao);
+include('../componentes/header.php');
+require("../database/conexao.php");
+require('../funcoes.php');
 
+$sql = "SELECT * FROM tbl_pessoa";
 
+$resultado = mysqli_query($conexao, $sql);
 
 ?>
 
@@ -58,6 +60,15 @@ $resultado = listar($conexao);
 
         </tbody>
      </table>
+
+     <script lang="javascript">
+        function deletar($cod_pessoa) {
+            if (confirm("Tem certeza que deseja deletar este usuário?")) {
+                document.querySelector("#cod_pessoa").value = $cod_pessoa;
+                document.querySelector("#formDeletar").submit();
+            }
+        }
+    </script>
 
 </div>
 

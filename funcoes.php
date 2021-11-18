@@ -1,11 +1,19 @@
 <?php
 
+session_start();
+
+if (!isset($_SESSION["usuarioId"])) {
+    header("location: ../login/index.php");
+}
+
     require("database/conexao.php");
 
-    if (isset($_POST['acao'])) 
-    {
-        switch ($_POST["acao"]) 
-        {
+    if (isset($_GET["acoes"])) {
+        $acao = $_GET["acoes"];
+    } else {
+        $acao = $_POST["acoes"];
+    }
+    switch ($acao) {
             case 'inserir':
 
                     $nome = $_POST["nome"];
@@ -14,25 +22,22 @@
                     $celular = $_POST["celular"];
 
                         $sqlInserir = "INSERT INTO tbl_pessoa (nome, sobrenome, email, celular) VALUES ('$nome', '$sobrenome', '$email', '$celular');";
-
-                        $resultadoEdit = mysqli_query($conexao, $sqlInserir);
+                        $resultado = mysqli_query($conexao, $sql);
 
                         header("location: index.php");
 
                 break;
 
             case 'excluir':
-                    $idExclusao = null;
 
-                    if (isset($_POST["id"])) 
-                    {$idExclusao = $_POST["id"];
-                    }
-                        $sqlExcluir = "DELETE FROM tbl_pessoa WHERE (cod_pessoa = $idExclusao);";
+                $cod_pessoa = $_POST['cod_pessoa'];
 
-                        $resultadoExclusao = mysqli_query($conexao, $sqlExcluir);
+                $sql = "DELETE FROM tbl_pessoa WHERE cod_pessoa = $cod_pessoa";
 
-                        header("location: index.php");
-
+                $resultado = mysqli_query($conexao, $sql);
+        
+                header('location: listagem/index.php');
+        
                 break;
 
             case 'alterar' :
@@ -43,32 +48,63 @@
                     $emailEditado = $_POST['email'];
                     $celularEditado = $_POST['celular'];
 
-                        $sqlEdicao = "UPDATE tbl_pessoa SET nome = '$usuarioEditado', sobrenome = '$usuarioEditado', email = '$emailEditado', celular = '$celularEditado' WHERE cod_pessoa = $idUsuario;";
-                        $resultadoEdicao = mysqli_query($conexao, $sqlEdicao);
-                        
-                        header("location: index.php");
-
+                    $sql = "UPDATE tbl_pessoa SET
+                    nome = '$nome',
+                    sobrenome = '$sobrenome',
+                    email = '$email',
+                    celular = '$celular'
+                    WHERE cod_pessoa = $cod_pessoa";
+        
+                $resultado = mysqli_query($conexao, $sql);
+        
+                header('location: listagem/index.php');
+        
                 break;
 
-            default:
-                # code...
-                break;
+                case 'login':
+
+                    $usuario = $_POST["txt_usuario"];
+                    $senha = $_POST["txt_senha"];
+            
+                    $sql = "SELECT * FROM tbl_administrador";
+            
+                    $resultado = mysqli_query($conexao, $sql);
+            
+                    header("location: listagem/index.php");
+            
+                    realizarLogin($usuario, $senha, $conexao);
+            
+                    break;
+            
+                case 'logout':
+            
+                    session_unset();
+                    session_destroy();
+                    header("location: login/index.php");
+            
+                    break;
+
+        default:
+        # code...
+        break;
+
+                    
         }
-    }
+    
 
-    function listar ($conexao)
-    {
-            $sql = "SELECT * FROM tbl_pessoa;";
+    // function listar ($conexao)
+    // {
+    //         $sql = "SELECT * FROM tbl_pessoa;";
         
-            $resultado = mysqli_query($conexao, $sql);
-            return $resultado;
-    }
+    //         $resultado = mysqli_query($conexao, $sql);
+    //         return $resultado;
+    // }
 
-    function listarID ($conexao, $idPessoa)
-    {
+    // function listarID ($conexao, $idPessoa)
+    // {
 
-        $sqlId = "SELECT * FROM tbl_pessoa WHERE cod_pessoa = $idPessoa;";
+    //     $sqlId = "SELECT * FROM tbl_pessoa WHERE cod_pessoa = $idPessoa;";
         
-            $resultadoId = mysqli_query($conexao,$sqlId);
-            return $resultadoId;
-    }
+    //         $resultadoId = mysqli_query($conexao,$sqlId);
+    //         return $resultadoId;
+ 

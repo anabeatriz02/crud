@@ -1,5 +1,12 @@
 <?php
-    include('../componentes/header.php');
+
+session_start();
+
+if (isset($_SESSION["usuarioId"])) {
+    header("location: ../listagem/index.php");
+}
+
+include('../componentes/header.php');
 ?>
 
     <div class="container-geral">
@@ -7,8 +14,7 @@
         <div class="container-form">
     
                 <form action="acoesLogin.php" method="POST">
-                    
-                <input type="hidden" name="acao" value="login">
+                <input type="hidden" name="acoes" value="login">
                     
                     <div class="form-group">
                         <label for="txt_usuario">USUÁRIO</label>

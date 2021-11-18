@@ -1,9 +1,20 @@
 <?php
+
+session_start();
+
+if (!isset($_SESSION["usuarioId"])) {
+    header("location: ../login/index.php");
+}
+
 include('../componentes/header.php');
-require('../funcoes.php');
+require('../database/conexao.php');
+
+// include('../componentes/header.php');
+// require('../funcoes.php');
 
 $idBuscarUsuario = $_GET['cod_pessoa'];
-$resultadoProcura = listar($conexao, $idBuscarUsuario);
+$sqlPessoa = "SELECT * FROM tbl_pessoa WHERE cod_pessoa = $cod_pessoa";
+$resultadoProcura = listar($conexao, $sqlPessoa);
 $editarUsuario = mysqli_fetch_array($resultadoProcura);
 ?>
 
@@ -15,16 +26,17 @@ $editarUsuario = mysqli_fetch_array($resultadoProcura);
         </div>
         <div class="card-body">
             <form method="post" action="../funcoes.php">
-                <input class="form-control" type="hidden" name="acao" value="editar">
-                <input class="form-control" type="hidden" name="id" value='<?= $editarUsuario["cod_pessoa"] ?>'>
-
-                <input class="form-control" type="text" name="sobrenome" id="sobrenome" value='<?= $editarUsuario["sobrenome"] ?>' required>
+            <input type="hidden" name="acoes" value="editar">
+                <input type="hidden" name="cod_pessoa" value="<?php echo $cod_pessoa ?>">
+                <input class="form-control" type="text" placeholder="Digite o nome" name="nome" id="nome" value="<?php echo $pessoa['nome'] ?>" required>
                 <br />
-                <input class="form-control" type="text" name="email" id="email" value='<?= $editarUsuario["email"] ?>' required>
+                <input class="form-control" type="text" placeholder="Digite o sobrenome" name="sobrenome" id="sobrenome" value="<?php echo $pessoa['sobrenome'] ?>" required>
                 <br />
-                <input class="form-control" type="text" name="celular" id="celular" value='<?= $editarUsuario["celular"] ?>' required>
+                <input class="form-control" type="text" placeholder="Digite o email" name="email" id="email" value="<?php echo $pessoa['email'] ?>" required>
                 <br />
-                <button class="btn btn-success">Editar</button>
+                <input class="form-control" type="text" placeholder="Digite celular" name="celular" id="celular" value="<?php echo $pessoa['celular'] ?>" required>
+                <br />
+                <button class="btn btn-success">EDITAR</button>
             </form>
         </div>
     </div>
@@ -32,7 +44,5 @@ $editarUsuario = mysqli_fetch_array($resultadoProcura);
 
 
 <?php
-header("location: listagem/index.php");
-
 include('../componentes/footer.php');
 ?>

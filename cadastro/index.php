@@ -1,5 +1,15 @@
 <?php
+session_start();
+
+if (!isset($_SESSION["usuarioId"])) {
+    header("location: ../login/index.php");
+}
+
 include('../componentes/header.php');
+require('../database/conexao.php');
+
+$sql = "SELECT * FROM tbl_pessoa";
+$resultado = mysqli_query($conexao, $sql);
 ?>
 
 
@@ -11,8 +21,7 @@ include('../componentes/header.php');
         </div>
         <div class="card-body">
             <form method="post" action="../funcoes.php">
-                <input class="form-control" type="hidden" name="acao" value="cadastrar" required>
-                <br />
+                <input type="hidden" name="acoes" value="inserir">
                 <input class="form-control" type="text" placeholder="Digite o nome" name="nome" id="nome" required>
                 <br />
                 <input class="form-control" type="text" placeholder="Digite o sobrenome" name="sobrenome" id="sobrenome" required>
