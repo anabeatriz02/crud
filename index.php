@@ -1,17 +1,8 @@
 <?php
+    session_start();
 
-// session_start();
-
-// if (isset($_SESSION["usuarioId"])) 
-// {
-//     header('location: listagem/index.php');
-// }
-
-// else
-// {
-//     header("location: ./login/index.php");
-// }
-
-header("location: login/index.php");
-
-?>
+    if (isset($_SESSION['idSessao'])) {
+    header('location: ./listagem/');
+    } else {
+        header('location: ./login/');
+    }

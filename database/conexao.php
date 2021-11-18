@@ -3,16 +3,10 @@
 const HOST = 'localhost';
 const USER = 'root';
 const PASSWORD = 'bcd127';
-const DATABASE = 'atv_crud';
+const DATABASE = 'cadastro';
 
 $conexao = mysqli_connect(HOST, USER, PASSWORD, DATABASE);
 
 if($conexao === false){
-
     die(mysqli_connect_error());
-
 }
-
-return $conexao;
-
-?>

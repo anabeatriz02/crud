@@ -1,79 +1,74 @@
 <?php
+    session_start();
 
-session_start();
+    if (isset($_SESSION['idSessao'])) {
 
-if (!isset($_SESSION["usuarioId"])) {
-    header("location: ../login/index.php");
-}
+    include('../componentes/header.php');
+    ?>
 
-include('../componentes/header.php');
-require("../database/conexao.php");
-require('../funcoes.php');
+    <?php
+    
+    require('../database/conexao.php');
 
-$sql = "SELECT * FROM tbl_pessoa";
+    $sql = "SELECT * FROM tbl_pessoa";
 
-$resultado = mysqli_query($conexao, $sql);
-
+    $resultado = mysqli_query($conexao, $sql);
 ?>
 
 <div class="container">
 
-    <br />
-
+    <br/>
+    
     <table class="table table-bordered">
 
-        <thead>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>E-mail</th>
+            <th>Celular</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        <?php
+            while($pessoa = mysqli_fetch_array($resultado)):
+                
+                $cod_pessoa = $pessoa['cod_pessoa'];
+        ?>
             <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Sobrenome</th>
-                <th>E-mail</th>
-                <th>Celular</th>
-                <th>Ações</th>
+                <th><?=$pessoa['cod_pessoa']?></th>
+                <th><?=$pessoa['nome']?></th>
+                <th><?=$pessoa['sobrenome']?></th>
+                <th><?=$pessoa['email']?></th>
+                <th><?=$pessoa['celular']?></th>
+                <th>
+                    <button onclick='javascript:window.location.href = "../cadastro/editar.php?cod_pessoa=<?=$cod_pessoa?>" ' class="btn btn-warning">Editar</button>
+
+                    <form action="../cadastro/acoes.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="cod_pessoa" value="<?=$cod_pessoa?>">
+                        <input type="hidden" name="acao" value="deletar">
+                        <button class="btn btn-danger">Excluir</button>
+                    </form>
+                    
+                </th>
             </tr>
-        </thead>
+        <?php
+            endwhile;
+        ?>
+    </tbody>
 
-        <tbody>
-
-            <?php while ($dados = mysqli_fetch_array($resultado)) {
-                # code...
-            ?>
-
-                <tr>
-                    <th><?php echo $dados["cod_pessoa"] ?></th>
-                    <th><?php echo $dados["nome"] ?></th>
-                    <th><?php echo $dados["sobrenome"] ?></th>
-                    <th><?php echo $dados["email"] ?></th>
-                    <th><?php echo $dados["celular"] ?></th>
-
-                    <th>
-
-                        <a class="btn btn-warning" href="acoes.php?cod_pessoa<?php echo $dados["cod_pessoa"] . '&acao=editar' ?>">Editar</a>
-                        <a class="btn btn-danger" href="acoes.php?cod_pessoa<?php echo $dados["cod_pessoa"] . '&acao=excluir' ?>">Excluir</a>
-
-                    </th>
-
-
-
-                </tr>
-            <?php }?>
-
-        </tbody>
-     </table>
-
-     <script lang="javascript">
-        function deletar($cod_pessoa) {
-            if (confirm("Tem certeza que deseja deletar este usuário?")) {
-                document.querySelector("#cod_pessoa").value = $cod_pessoa;
-                document.querySelector("#formDeletar").submit();
-            }
-        }
-    </script>
+    </table>
 
 </div>
 
 <?php
-
-include('../componentes/footer.php');
-
+    } else{
+        header('location: ../login/index.php');
+        echo('USUÁRIO NÃO ENCONTRADO');
+    }
+    include('../componentes/footer.php');
 ?>
